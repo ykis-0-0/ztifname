@@ -1,5 +1,5 @@
 use clap::Parser;
-use eyre::{Result as eResult, eyre, Context};
+use eyre::{eyre, Context, Result as eResult};
 
 use ::ztidtrans as lib;
 use lib::Nwid;
@@ -27,7 +27,7 @@ pub struct Cli {
   */
 
   /// ZeroTier Network ID, a 16-character long hexadecimal ASCII string
-  nwid: String
+  nwid: String,
 }
 
 impl Cli {
@@ -35,16 +35,22 @@ impl Cli {
     let nwid = self.nwid.as_str();
 
     if !nwid.is_ascii() {
-      return Err(eyre!("Network ID not a 16-character long hexadecimal ASCII string"));
+      return Err(eyre!(
+        "Network ID not a 16-character long hexadecimal ASCII string"
+      ));
     }
 
     if nwid.len() != 16 {
-      return Err(eyre!("Network ID not hexadecimal 16-character long string"));
+      return Err(eyre!(
+        "Network ID not hexadecimal 16-character long string"
+      ));
     }
 
     match Nwid::from_str_radix(nwid, 16) {
-        Ok(netid) => Ok(netid), // std::Result::Ok => eyre::Result::Ok
-        err @ Err(_) => err.wrap_err("Cannot parse hex digits from provided ID"),
+      Ok(netid) => Ok(netid), // std::Result::Ok => eyre::Result::Ok
+      err @ Err(_) => err.wrap_err(
+        "Cannot parse hex digits from provided ID"
+      ),
     }
   }
 }

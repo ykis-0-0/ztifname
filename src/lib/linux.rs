@@ -1,4 +1,4 @@
-use bitvec::{prelude::Msb0, view::BitView, mem::bits_of, field::BitField};
+use bitvec::{field::BitField, mem::bits_of, prelude::Msb0, view::BitView};
 
 use super::Nwid;
 
@@ -10,11 +10,11 @@ pub fn ztdevname(nwid: Nwid) -> String {
   let nwid_crossed = nwid ^ nwid >> 24;
 
   // and distill it out
-  let bits = &nwid_crossed.view_bits::<Msb0>()[bits_of::<Nwid>() - 40..];
+  let bits = &nwid_crossed.view_bits::<Msb0>()[bits_of::<Nwid>() - 40 ..];
 
-  let output = bits.chunks(5).map(| chunk | -> char {
-      let idx = chunk.load_be::<usize>();
-      BASE32_CHARS.as_bytes()[idx] as char
+  let output = bits.chunks(5).map(|chunk| -> char {
+    let idx = chunk.load_be::<usize>();
+    BASE32_CHARS.as_bytes()[idx] as char
   });
 
   "zt".chars()

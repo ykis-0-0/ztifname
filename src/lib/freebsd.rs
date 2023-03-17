@@ -1,4 +1,4 @@
-use bitvec::{prelude::Msb0, view::BitView, slice::BitSlice, field::BitField};
+use bitvec::{field::BitField, prelude::Msb0, slice::BitSlice, view::BitView};
 
 use super::Nwid;
 
@@ -10,26 +10,26 @@ pub fn ztdevname(nwid: Nwid) -> String {
   let bits = nwid.view_bits::<Msb0>();
 
   let expanded = {
-      let mut rtv = bits.to_bitvec();
-      rtv.insert(0, false);
-      rtv
+    let mut rtv = bits.to_bitvec();
+    rtv.insert(0, false);
+    rtv
   };
 
   let mapper = |chunk: &BitSlice<Nwid, Msb0>| -> char {
-      let idx = chunk.load_be::<usize>();
-      let rtv = BASE32_CHARS.as_bytes()[idx] as char;
-      rtv
+    let idx = chunk.load_be::<usize>();
+    let rtv = BASE32_CHARS.as_bytes()[idx] as char;
+    rtv
   };
 
   // first char has to be left-padding w/ 1 zero bit to make room for base32
-  let char0 = std::iter::once(mapper(&(bits[..4])));
-  let remaining = expanded[5..].chunks(5).map(mapper);
+  let char0 = std::iter::once(mapper(&(bits[.. 4])));
+  let remaining = expanded[5 ..].chunks(5).map(mapper);
 
-  "zt".chars()
-  .chain(char0)
-  .chain(remaining)
-  .collect::<String>()
-
+  "zt"
+    .chars()
+    .chain(char0)
+    .chain(remaining)
+    .collect::<String>()
 }
 
 #[test]
