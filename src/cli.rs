@@ -15,16 +15,11 @@ pub struct Cli {
   #[arg(long)]
   pub linux: bool,
 
-  /// Extrapolate against collision possibilities
-  #[arg(short, long, value_name = "COUNT", default_value = "1")]
+  /// Extrapolate against collision possibilities,
+  /// default to 1 if COUNT not provided
+  #[arg(short, long, value_name = "COUNT", verbatim_doc_comment)]
   #[arg(requires = "linux")]
   pub extra: Option<Option<u8>>,
-
-  /*
-  /// Verbosity of output, 0 for machine consumable minimal output
-  #[arg(long = "verbose", action = clap::ArgAction::Count)]
-  pub verbosity: u8,
-  */
 
   /// ZeroTier Network ID, a 16-character long hexadecimal ASCII string
   nwid: String,
