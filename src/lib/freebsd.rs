@@ -21,7 +21,7 @@ pub fn ztdevname(nwid: Nwid) -> String {
     rtv
   };
 
-  // first char has to be left-padding w/ 1 zero bit to make room for base32
+  // first char has to have 1 zero bit unshifted to make room for base32
   let char0 = std::iter::once(mapper(&(bits[.. 4])));
   let remaining = expanded[5 ..].chunks(5).map(mapper);
 

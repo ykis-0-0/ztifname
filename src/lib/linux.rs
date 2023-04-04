@@ -7,7 +7,7 @@ const BASE32_CHARS: &str = "abcdefghijklmnopqrstuvwxyz234567";
 
 pub fn ztdevname(nwid: Nwid) -> String {
   // concentrate the effect to the smallest 40 bits
-  let nwid_crossed = nwid ^ nwid >> 24;
+  let nwid_crossed = nwid ^ (nwid >> 24);
 
   // and distill it out
   let bits = &nwid_crossed.view_bits::<Msb0>()[bits_of::<Nwid>() - 40 ..];
