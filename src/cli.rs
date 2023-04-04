@@ -1,7 +1,7 @@
 use clap::Parser;
 use eyre::{eyre, Context, Result as eResult};
 
-use ::ztidtrans as lib;
+use ::ztifname as lib;
 use lib::Nwid;
 
 #[derive(Parser)]

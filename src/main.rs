@@ -1,6 +1,6 @@
 use eyre::Result as eResult;
 
-use ::ztidtrans as lib;
+use ::ztifname as lib;
 use lib::Nwid;
 
 mod cli;
