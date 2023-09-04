@@ -1,5 +1,10 @@
 {
-  "rust-analyzer.inlayHints.closureReturnTypeHints.enable": true,
-  "rust-analyzer.inlayHints.reborrowHints.enable": "always",
-  "rust-analyzer.inlayHints.parameterHints.enable": false
+  "rust-analyzer.inlayHints.bindingModeHints.enable": true,
+  "rust-analyzer.inlayHints.closureReturnTypeHints.enable": "always",
+  "rust-analyzer.inlayHints.expressionAdjustmentHints.enable": "always",
+  "rust-analyzer.inlayHints.expressionAdjustmentHints.mode": "prefix",
+  "rust-analyzer.inlayHints.lifetimeElisionHints.enable": "always",
+  "rust-analyzer.inlayHints.lifetimeElisionHints.useParameterNames": true,
+  "rust-analyzer.inlayHints.reborrowHints.enable": "always"
+  // "rust-analyzer.cargo.target": "wasm32-unknown-unknown",
 }

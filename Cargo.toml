@@ -6,10 +6,10 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-bitvec = "1"
-clap = { version = "4", features = ["derive", "cargo"] }
-eyre = "< 2"
-color-eyre = "< 2"
+bitvec = "*"
+clap = { version = "*", features = ["derive", "cargo"] }
+eyre = "*"
+color-eyre = "*"
 
 [lib]
 path = "src/lib/mod.rs"
