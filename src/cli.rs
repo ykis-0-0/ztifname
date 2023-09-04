@@ -1,5 +1,5 @@
 use clap::Parser;
-use eyre::{eyre, Context, Result as eResult};
+use eyre::{eyre, Result as eResult, Context as _};
 
 use ::ztifname as lib;
 use lib::Nwid;
@@ -41,11 +41,8 @@ impl Cli {
       ));
     }
 
-    match Nwid::from_str_radix(nwid, 16) {
-      Ok(netid) => Ok(netid), // std::Result::Ok => eyre::Result::Ok
-      err @ Err(_) => err.wrap_err(
-        "Cannot parse hex digits from provided ID"
-      ),
-    }
+    Nwid::from_str_radix(nwid, 16).wrap_err(
+      "Cannot parse hex digits from provided ID"
+    )
   }
 }
