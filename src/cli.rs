@@ -2,7 +2,7 @@ use clap::Parser;
 use eyre::{eyre, Result as eResult, Context as _};
 
 use ::ztifname as lib;
-use lib::Nwid;
+use lib::RawNwid;
 
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
@@ -26,7 +26,7 @@ pub struct Cli {
 }
 
 impl Cli {
-  pub fn get_nwid(&self) -> eResult<Nwid> {
+  pub fn get_nwid(&self) -> eResult<RawNwid> {
     let nwid = self.nwid.as_str();
 
     if !nwid.is_ascii() {
@@ -41,7 +41,7 @@ impl Cli {
       ));
     }
 
-    Nwid::from_str_radix(nwid, 16).wrap_err(
+    RawNwid::from_str_radix(nwid, 16).wrap_err(
       "Cannot parse hex digits from provided ID"
     )
   }

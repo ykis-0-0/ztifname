@@ -1,4 +1,6 @@
-pub type Nwid = u64;
+pub mod nwid;
+pub use nwid::{Nwid, RawNwid};
+use nwid::CellElem;
 
 pub mod freebsd;
 pub mod linux;

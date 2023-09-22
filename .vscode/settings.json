@@ -6,5 +6,5 @@
   "rust-analyzer.inlayHints.lifetimeElisionHints.enable": "always",
   "rust-analyzer.inlayHints.lifetimeElisionHints.useParameterNames": true,
   "rust-analyzer.inlayHints.reborrowHints.enable": "always"
-  // "rust-analyzer.cargo.target": "wasm32-unknown-unknown",
+  // "rust-analyzer.cargo.target": "wasm32-wasi",
 }
