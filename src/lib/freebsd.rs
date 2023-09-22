@@ -18,6 +18,8 @@ pub fn ztdevname(nwid: Nwid) -> String {
 
   let idvec = {
     let mut train = BitVec::<CellElem, BOrder>::from(nwid);
+
+    // Unshift 1 bit to make even for 5bits x 13
     train.insert(0, false);
 
     train
@@ -25,13 +27,10 @@ pub fn ztdevname(nwid: Nwid) -> String {
 
   // first char has to have 1 zero bit unshifted to make room for base32
   const CHAR_WIDTH: usize = 5;
-  let char0 = std::iter::once(mapper(&idvec[ .. CHAR_WIDTH]));
-  let remaining = idvec[CHAR_WIDTH .. ].chunks(CHAR_WIDTH).map(mapper);
+  let chunks = idvec.chunks(CHAR_WIDTH).map(mapper);
 
-  "zt"
-  .chars()
-  .chain(char0)
-  .chain(remaining)
+  "zt".chars()
+  .chain(chunks)
   .collect::<String>()
 }
 

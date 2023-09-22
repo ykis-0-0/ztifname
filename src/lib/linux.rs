@@ -11,15 +11,14 @@ const BASE32_CHARS: &str = "abcdefghijklmnopqrstuvwxyz234567";
 pub fn ztdevname(nwid: Nwid) -> String {
 
   let nwid_crossed: BitVec<_, Msb0> = {
-    type BitVecLE = BitVec<CellElem, Msb0>;
     // concentrate the effect to the smallest 40 bits
     const EFFECT_WIDTH: usize = 40;
 
-    let idvec: BitVecLE = BitVec::from(nwid);
+    let idvec = BitVec::<CellElem, Msb0>::from(nwid);
     let head = &idvec[ .. EFFECT_WIDTH];
     let tail = &idvec[RawNwid::BITS as usize - EFFECT_WIDTH .. ];
 
-    // and distill it out
+    // do the meth
     head.to_owned() ^ tail
   };
 
