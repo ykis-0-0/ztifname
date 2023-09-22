@@ -33,6 +33,11 @@ pub fn ztdevname(nwid: Nwid) -> String {
 }
 
 #[test]
+fn sanity_check() {
+  assert_eq!(ztdevname(0x0123_4567_89ab_cdef), concat!("zt", "028q5cu4qnjff"));
+}
+
+#[test]
 fn validate() {
   assert_eq!(ztdevname(0xabfd_31bd_47a5_6b31), concat!("zt", "anv9hnl3qaqph"));
 }
