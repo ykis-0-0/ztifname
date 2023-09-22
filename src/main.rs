@@ -14,9 +14,22 @@ pub fn main() -> eResult<()> {
   let nwid_raw: RawNwid = args.get_nwid()?;
 
   // Unspecified, print default ifname on OS and quits
+  #[cfg(any(target_os = "linux", target_os = "freebsd"))]
   if !args.linux && !args.freebsd {
     println!("{}", lib::ztdevname(nwid_raw));
     return Ok(());
+  }
+
+  #[cfg(not(any(target_os = "linux", target_os = "freebsd")))]
+  if !args.linux && !args.freebsd {
+    use clap::error::ErrorKind::MissingRequiredArgument;
+
+    <Cli as clap::CommandFactory>::command()
+    .error(
+      MissingRequiredArgument,
+      "Specify target OS for ifname evaluation"
+    )
+    .exit();
   }
 
   if args.freebsd {
