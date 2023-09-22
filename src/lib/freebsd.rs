@@ -1,11 +1,11 @@
 use bitvec::{field::BitField, prelude::Msb0, slice::BitSlice, view::BitView};
 
-use super::Nwid;
+use super::RawNwid;
 
 // scraped from https://github.com/zerotier/ZeroTierOne/blob/4a4c8f84d50273f80050b665d99804662c8aa6bb/osdep/BSDEthernetTap.cpp#L55
 const BASE32_CHARS: &str = "0123456789abcdefghijklmnopqrstuv";
 
-pub fn ztdevname(nwid: Nwid) -> String {
+pub fn ztdevname(nwid: RawNwid) -> String {
 
   let bits = nwid.view_bits::<Msb0>();
 
@@ -15,7 +15,7 @@ pub fn ztdevname(nwid: Nwid) -> String {
     rtv
   };
 
-  let mapper = |chunk: &BitSlice<Nwid, Msb0>| -> char {
+  let mapper = |chunk: &BitSlice<RawNwid, Msb0>| -> char {
     let idx = chunk.load_be::<usize>();
     let rtv = BASE32_CHARS.as_bytes()[idx] as char;
     rtv

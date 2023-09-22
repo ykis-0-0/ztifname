@@ -1,4 +1,4 @@
-pub type Nwid = u64;
+pub type RawNwid = u64;
 
 pub mod freebsd;
 pub mod linux;
