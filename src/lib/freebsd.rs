@@ -1,47 +1,46 @@
 use bitvec::{
-  prelude::{Msb0, BitSlice},
-  view::BitView,
+  prelude::{BitVec, BitSlice, Msb0},
   field::BitField as _,
 };
 
-use super::RawNwid;
+use super::{Nwid, CellElem};
 
 // scraped from https://github.com/zerotier/ZeroTierOne/blob/4a4c8f84d50273f80050b665d99804662c8aa6bb/osdep/BSDEthernetTap.cpp#L55
 const BASE32_CHARS: &str = "0123456789abcdefghijklmnopqrstuv";
 
-pub fn ztdevname(nwid: RawNwid) -> String {
+pub fn ztdevname(nwid: Nwid) -> String {
+  type BOrder = Msb0;
 
-  let bits = nwid.view_bits::<Msb0>();
-
-  let expanded = {
-    let mut rtv = bits.to_bitvec();
-    rtv.insert(0, false);
-    rtv
+  let mapper = |chunk: &BitSlice<CellElem, BOrder>| -> char {
+    let idx = chunk.load_be::<usize>();
+    BASE32_CHARS.as_bytes()[idx] as char
   };
 
-  let mapper = |chunk: &BitSlice<RawNwid, Msb0>| -> char {
-    let idx = chunk.load_be::<usize>();
-    let rtv = BASE32_CHARS.as_bytes()[idx] as char;
-    rtv
+  let idvec = {
+    let mut train = BitVec::<CellElem, BOrder>::from(nwid);
+    train.insert(0, false);
+
+    train
   };
 
   // first char has to have 1 zero bit unshifted to make room for base32
-  let char0 = std::iter::once(mapper(&(bits[.. 4])));
-  let remaining = expanded[5 ..].chunks(5).map(mapper);
+  const CHAR_WIDTH: usize = 5;
+  let char0 = std::iter::once(mapper(&idvec[ .. CHAR_WIDTH]));
+  let remaining = idvec[CHAR_WIDTH .. ].chunks(CHAR_WIDTH).map(mapper);
 
   "zt"
-    .chars()
-    .chain(char0)
-    .chain(remaining)
-    .collect::<String>()
+  .chars()
+  .chain(char0)
+  .chain(remaining)
+  .collect::<String>()
 }
 
 #[test]
 fn sanity_check() {
-  assert_eq!(ztdevname(0x0123_4567_89ab_cdef), concat!("zt", "028q5cu4qnjff"));
+  assert_eq!(ztdevname(Nwid::from(0x0123_4567_89ab_cdef)), concat!("zt", "028q5cu4qnjff"));
 }
 
 #[test]
 fn validate() {
-  assert_eq!(ztdevname(0xabfd_31bd_47a5_6b31), concat!("zt", "anv9hnl3qaqph"));
+  assert_eq!(ztdevname(Nwid::from(0xabfd_31bd_47a5_6b31)), concat!("zt", "anv9hnl3qaqph"));
 }

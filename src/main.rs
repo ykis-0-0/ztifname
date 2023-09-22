@@ -1,7 +1,7 @@
 use eyre::Result as eResult;
 
 use ::ztifname as lib;
-use lib::RawNwid;
+use lib::{Nwid, RawNwid};
 
 mod cli;
 use cli::Cli;
@@ -16,7 +16,7 @@ pub fn main() -> eResult<()> {
   // Unspecified, print default ifname on OS and quits
   #[cfg(any(target_os = "linux", target_os = "freebsd"))]
   if !args.linux && !args.freebsd {
-    println!("{}", lib::ztdevname(nwid_raw));
+    println!("{}", lib::ztdevname(Nwid::from(nwid_raw)));
     return Ok(());
   }
 
@@ -33,7 +33,7 @@ pub fn main() -> eResult<()> {
   }
 
   if args.freebsd {
-    println!("FreeBSD\t{}", lib::freebsd::ztdevname(nwid_raw));
+    println!("FreeBSD\t{}", lib::freebsd::ztdevname(Nwid::from(nwid_raw)));
   }
 
   if args.linux {
@@ -44,7 +44,7 @@ pub fn main() -> eResult<()> {
     };
 
     for pad in 0 ..= end_idx {
-      println!("Linux\t{}", lib::linux::ztdevname(nwid_raw + pad as u64));
+      println!("Linux\t{}", lib::linux::ztdevname(Nwid::from(nwid_raw + pad as u64)));
     }
   }
 
