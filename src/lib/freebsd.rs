@@ -1,4 +1,8 @@
-use bitvec::{field::BitField, prelude::Msb0, slice::BitSlice, view::BitView};
+use bitvec::{
+  prelude::{Msb0, BitSlice},
+  view::BitView,
+  field::BitField as _,
+};
 
 use super::RawNwid;
 

@@ -1,4 +1,9 @@
-use bitvec::{field::BitField, mem::bits_of, prelude::Msb0, view::BitView};
+use bitvec::{
+  prelude::Msb0,
+  view::BitView,
+  mem::bits_of,
+  field::BitField as _,
+};
 
 use super::RawNwid;
 
